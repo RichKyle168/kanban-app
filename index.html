@@ -1,0 +1,231 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>暖光看板 · Minimalist Kanban Board</title>
+  <link rel="stylesheet" href="style.css">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700&family=Noto+Sans+TC:wght@400;500;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+  <div class="app-wrapper">
+    <!-- 頂部標頭 -->
+    <header class="app-header">
+      <div class="header-content">
+        <div class="header-top-bar">
+          <div class="badge-app-status">
+            <span class="status-dot"></span>
+            <span id="currentDateText">載入日期中...</span>
+          </div>
+          <!-- Google 日曆快捷連結 -->
+          <a href="https://calendar.google.com" target="_blank" rel="noopener noreferrer" class="btn-gcal-link" title="另開分頁前往 Google 日曆">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect>
+              <line x1="16" y1="2" x2="16" y2="6"></line>
+              <line x1="8" y1="2" x2="8" y2="6"></line>
+              <line x1="3" y1="10" x2="21" y2="10"></line>
+            </svg>
+            <span>開啟 Google 日曆</span>
+            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"></path>
+              <polyline points="15 3 21 3 21 9"></polyline>
+              <line x1="10" y1="14" x2="21" y2="3"></line>
+            </svg>
+          </a>
+        </div>
+
+        <h1 class="app-title">溫暖看板 <span>Daily Workflow</span></h1>
+        <p class="app-subtitle">拖曳卡片以管理流程 · 劃分工作與生活 · 一鍵串接 Google 日曆</p>
+      </div>
+    </header>
+
+    <!-- 任務新增卡片 -->
+    <section class="action-card">
+      <form id="todoForm" class="todo-form">
+        <div class="form-row-main">
+          <div class="input-group task-input-group">
+            <label for="todoInput" class="visually-hidden">任務內容</label>
+            <input 
+              type="text" 
+              id="todoInput" 
+              class="form-input" 
+              placeholder="有什麼新任務想加入看板？" 
+              autocomplete="off"
+              required
+            >
+          </div>
+        </div>
+
+        <div class="form-row-meta">
+          <!-- 負責人輸入 -->
+          <div class="input-group assignee-group">
+            <span class="input-icon">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
+                <circle cx="12" cy="7" r="4"></circle>
+              </svg>
+            </span>
+            <label for="assigneeInput" class="visually-hidden">負責人</label>
+            <input 
+              type="text" 
+              id="assigneeInput" 
+              class="form-input form-input-sm" 
+              placeholder="負責人 (選填，如: Alex)" 
+              autocomplete="off"
+            >
+          </div>
+
+          <!-- 日期與時間選擇 (Google 日曆排程) -->
+          <div class="input-group date-group">
+            <span class="input-icon">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect>
+                <line x1="16" y1="2" x2="16" y2="6"></line>
+                <line x1="8" y1="2" x2="8" y2="6"></line>
+                <line x1="3" y1="10" x2="21" y2="10"></line>
+              </svg>
+            </span>
+            <label for="dueDateInput" class="visually-hidden">日期時間</label>
+            <input 
+              type="datetime-local" 
+              id="dueDateInput" 
+              class="form-input form-input-sm date-picker" 
+              title="排定預計完成日期與時間 (可一鍵同步至 Google 日曆)"
+            >
+          </div>
+
+          <!-- 分類選擇器 -->
+          <div class="category-toggle" role="radiogroup" aria-label="任務分類選擇">
+            <label class="category-radio work-radio">
+              <input type="radio" name="taskCategory" value="work" checked>
+              <span class="radio-pill">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                  <rect x="2" y="7" width="20" height="14" rx="2" ry="2"></rect>
+                  <path d="M16 21V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16"></path>
+                </svg>
+                工作
+              </span>
+            </label>
+            <label class="category-radio life-radio">
+              <input type="radio" name="taskCategory" value="life">
+              <span class="radio-pill">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                  <path d="M12 2a9 9 0 0 1 9 9v1a9 9 0 0 1-9 9 9 9 0 0 1-9-9v-1a9 9 0 0 1 9-9z"></path>
+                  <path d="M12 11v8"></path>
+                  <path d="M8 15h8"></path>
+                </svg>
+                生活
+              </span>
+            </label>
+          </div>
+
+          <!-- 新增按鈕 -->
+          <button type="submit" id="addBtn" class="btn-primary">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+              <line x1="12" y1="5" x2="12" y2="19"></line>
+              <line x1="5" y1="12" x2="19" y2="12"></line>
+            </svg>
+            <span>新增至待辦</span>
+          </button>
+        </div>
+      </form>
+
+      <!-- 篩選列 -->
+      <div class="filter-bar">
+        <div class="filter-tabs" aria-label="待辦清單篩選">
+          <span class="filter-label">分類篩選：</span>
+          <button type="button" class="tab-btn active" data-filter="all">
+            全部 <span class="counter-badge" id="countAll">0</span>
+          </button>
+          <button type="button" class="tab-btn" data-filter="work">
+            💼 工作 <span class="counter-badge" id="countWork">0</span>
+          </button>
+          <button type="button" class="tab-btn" data-filter="life">
+            🌿 生活 <span class="counter-badge" id="countLife">0</span>
+          </button>
+        </div>
+        <div class="board-actions">
+          <button type="button" id="clearDoneBtn" class="btn-text" title="清除 Done 欄位中所有項目">
+            清空已完成 (Done)
+          </button>
+        </div>
+      </div>
+    </section>
+
+    <!-- 三欄看板容器 (Kanban Board) -->
+    <main class="kanban-board" aria-label="任務看板">
+      <!-- 欄位 1: To-do -->
+      <section class="kanban-column" data-status="todo" id="col-todo">
+        <header class="column-header">
+          <div class="column-title-wrap">
+            <span class="col-indicator indicator-todo"></span>
+            <h2 class="column-title">To-do</h2>
+            <span class="col-sub">待處理</span>
+          </div>
+          <span class="column-badge" id="badgeCountTodo">0</span>
+        </header>
+
+        <div class="kanban-dropzone" data-status="todo" id="dropzone-todo">
+          <ul class="task-card-list" id="list-todo">
+            <!-- 動態渲染 -->
+          </ul>
+          <div class="drop-placeholder">
+            <span>拖曳任務至此</span>
+          </div>
+        </div>
+      </section>
+
+      <!-- 欄位 2: Process -->
+      <section class="kanban-column" data-status="process" id="col-process">
+        <header class="column-header">
+          <div class="column-title-wrap">
+            <span class="col-indicator indicator-process"></span>
+            <h2 class="column-title">Process</h2>
+            <span class="col-sub">進行中</span>
+          </div>
+          <span class="column-badge" id="badgeCountProcess">0</span>
+        </header>
+
+        <div class="kanban-dropzone" data-status="process" id="dropzone-process">
+          <ul class="task-card-list" id="list-process">
+            <!-- 動態渲染 -->
+          </ul>
+          <div class="drop-placeholder">
+            <span>拖曳任務至此</span>
+          </div>
+        </div>
+      </section>
+
+      <!-- 欄位 3: Done -->
+      <section class="kanban-column" data-status="done" id="col-done">
+        <header class="column-header">
+          <div class="column-title-wrap">
+            <span class="col-indicator indicator-done"></span>
+            <h2 class="column-title">Done</h2>
+            <span class="col-sub">已完成</span>
+          </div>
+          <span class="column-badge" id="badgeCountDone">0</span>
+        </header>
+
+        <div class="kanban-dropzone" data-status="done" id="dropzone-done">
+          <ul class="task-card-list" id="list-done">
+            <!-- 動態渲染 -->
+          </ul>
+          <div class="drop-placeholder">
+            <span>拖曳任務至此</span>
+          </div>
+        </div>
+      </section>
+    </main>
+
+    <!-- 頁腳提示 -->
+    <footer class="app-credits">
+      <span>💡 點擊卡片上的 📅 可一鍵排入 Google 日曆 · 任務可自由跨欄拖曳管理</span>
+    </footer>
+  </div>
+
+  <script src="app.js"></script>
+</body>
+</html>
