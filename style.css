@@ -699,6 +699,19 @@ body {
   opacity: 0.85;
 }
 
+/* 截止日期：今天或已過期 (醒目紅色) */
+.badge-date.is-overdue {
+  color: #C53030;
+  background-color: #FFF5F5;
+  border-color: #FEB2B2;
+  font-weight: 600;
+}
+
+.badge-date.is-overdue svg {
+  color: #C53030;
+  opacity: 1;
+}
+
 /* 卡片操作按鈕 */
 .card-actions {
   display: flex;
